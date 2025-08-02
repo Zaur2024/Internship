@@ -1,3 +1,4 @@
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -25,9 +26,11 @@ class SecondaryDealsPage(BasePage):
         button = self.find_element(*self.apply_filter_button)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
         self.driver.save_screenshot('before_click.png')
+
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(self.apply_filter_button)
         )
+
         self.driver.execute_script("arguments[0].click();", button)
 
     def all_deals_have_want_to_buy_tag(self):

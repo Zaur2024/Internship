@@ -11,7 +11,3 @@ class loginPage(BasePage):
         self.send_keys(self.email_input, email)
         self.send_keys(self.password_input, password)
         self.click(self.login_button)
-
-
-
-

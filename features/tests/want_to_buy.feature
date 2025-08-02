@@ -9,3 +9,5 @@ Feature: Filter Secondary Deals
     And the user filters by "want to buy"
     And the user clicks Apply Filter
     Then all cards have a "Want to buy" tag
+
+
