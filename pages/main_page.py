@@ -18,9 +18,10 @@ class MainPage(BasePage):
 
     def click_secondary(self):
         sleep(2)
-        WebDriverWait(self.driver, timeout=10).until(
+        WebDriverWait(self.driver, timeout=20).until(
             EC.element_to_be_clickable(self.secondary_option)
         )
+
         element = self.find_element(*self.secondary_option)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
         self.driver.save_screenshot("before_click_secondary.png")

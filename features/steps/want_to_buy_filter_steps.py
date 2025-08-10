@@ -14,9 +14,11 @@ def step_open_main_page(context):
 
 @given("the user is logged in")
 def step_login(context):
+    sleep(2)
     context.login_page = loginPage(context.driver)
+    sleep(2)
     context.login_page.login("zaur.huseynov283@gmail.com", "Zxcvb12345.")
-
+    sleep(2)
 @when("the user clicks on the Secondary option")
 def step_click_secondary(context):
     context.main_page.click_secondary()
