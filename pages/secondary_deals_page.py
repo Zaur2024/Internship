@@ -1,3 +1,4 @@
+from time import sleep
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,9 +13,11 @@ class SecondaryDealsPage(BasePage):
     deal_tags = (By.CSS_SELECTOR, '[wized="saleTagMLS"]')
 
     def click_filters(self):
+        sleep(2)
         self.click(self.filters_button)
 
     def select_want_to_buy_filter(self):
+        sleep(2)
         checkbox = self.find_element(*self.want_to_buy_checkbox)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", checkbox)
         WebDriverWait(self.driver, 10).until(
@@ -26,11 +29,9 @@ class SecondaryDealsPage(BasePage):
         button = self.find_element(*self.apply_filter_button)
         self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
         self.driver.save_screenshot('before_click.png')
-
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(self.apply_filter_button)
         )
-
         self.driver.execute_script("arguments[0].click();", button)
 
     def all_deals_have_want_to_buy_tag(self):
