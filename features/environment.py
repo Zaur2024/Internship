@@ -1,73 +1,44 @@
-
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from app.application import Application
 from pages.secondary_deals_page import SecondaryDealsPage
 
-""" Chrome
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-"""
-# Firefox
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
-
-
 def browser_init(context):
-    """
-    :param context: Behave context
-    """
+    caps = {
+        'os': 'MAC',
+        'osVersion': 'Monterey',
+        'browserName': 'Safari',
+        'browserVersion': '15.6',
+        'bstack:options': {
+            'userName': 'zaurhuseynov_RGnVfT',
+            'accessKey': 'Bpxz1kHxgyFay9guBc4K',
+            'buildName': 'My Build',
+            'sessionName': context.scenario.name if hasattr(context, 'scenario') else 'Test Session',
+            'local': False
+        }
+    }
 
-    #chrome_options = Options()
-    #chrome_options.add_argument("--headless")
-    #chrome_options.add_argument("--disable-gpu")
-    #chrome_options.add_argument("--window-size=1920,1080")
+    options = Options()
+    options.set_capability('bstack:options', caps['bstack:options'])
+    options.set_capability('browserName', caps['browserName'])
+    options.set_capability('browserVersion', caps['browserVersion'])
+    options.set_capability('platformName', caps['os'])
 
-    #chrome_options.add_argument("--no-sandbox")
-    #chrome_options.add_argument("--disable-dev-shm-usage")
-    #chrome_options.add_argument("--disable-extensions")
-    #chrome_options.add_argument("--disable-infobars")
+    context.driver = webdriver.Remote(
+        command_executor='https://hub-cloud.browserstack.com/wd/hub',
+        options=options
+    )
 
-    #driver_path = ChromeDriverManager().install()
-    #service = Service(driver_path)
-    #context.driver = webdriver.Chrome(service=service, options=chrome_options)
-
-
-
-    #context.driver.maximize_window()
-
-# ---------------- Firefox setup (uncomment to use Firefox) ----------------
-    firefox_options = FirefoxOptions()
-    firefox_options.headless = False  # Change to True for headless mode
-    firefox_options.add_argument("--width=1920")
-    firefox_options.add_argument("--height=1080")
-
-    driver_path = GeckoDriverManager().install()
-    service = FirefoxService(driver_path)
-    context.driver = webdriver.Firefox(service=service, options=firefox_options)
     context.driver.implicitly_wait(10)
     context.driver.wait = WebDriverWait(context.driver, 10)
-    context.app = Application(context.driver)
     context.driver.maximize_window()
 
-
 def before_scenario(context, scenario):
-    print('\nStarted scenario: ', scenario.name)
+    print(f"\nStarting scenario: {scenario.name}")
+    context.scenario = scenario
     browser_init(context)
     context.secondary_page = SecondaryDealsPage(context.driver)
 
-
-def before_step(context, step):
-    print('\nStarted step: ', step)
-
-
-def after_step(context, step):
-    if step.status == 'failed':
-        print('\nStep failed: ', step)
-
-
-def after_scenario(context, feature):
+def after_scenario(context, scenario):
     context.driver.quit()
+    print(f"\nFinished scenario: {scenario.name}")
