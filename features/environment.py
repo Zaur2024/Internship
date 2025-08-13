@@ -1,37 +1,21 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 from pages.secondary_deals_page import SecondaryDealsPage
 
 def browser_init(context):
-    caps = {
-        'os': 'MAC',
-        'osVersion': 'Monterey',
-        'browserName': 'Safari',
-        'browserVersion': '15.6',
-        'bstack:options': {
-            'userName': 'zaurhuseynov_RGnVfT',
-            'accessKey': 'Bpxz1kHxgyFay9guBc4K',
-            'buildName': 'My Build',
-            'sessionName': context.scenario.name if hasattr(context, 'scenario') else 'Test Session',
-            'local': False
-        }
-    }
+    mobile_emulation = {"deviceName": "Nexus 5"}
+    chrome_options = Options()
+    chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--disable-notifications")
 
-    options = Options()
-    options.set_capability('bstack:options', caps['bstack:options'])
-    options.set_capability('browserName', caps['browserName'])
-    options.set_capability('browserVersion', caps['browserVersion'])
-    options.set_capability('platformName', caps['os'])
-
-    context.driver = webdriver.Remote(
-        command_executor='https://hub-cloud.browserstack.com/wd/hub',
-        options=options
-    )
-
+    service = Service(ChromeDriverManager().install())
+    context.driver = webdriver.Chrome(service=service, options=chrome_options)
     context.driver.implicitly_wait(10)
     context.driver.wait = WebDriverWait(context.driver, 10)
-    context.driver.maximize_window()
 
 def before_scenario(context, scenario):
     print(f"\nStarting scenario: {scenario.name}")

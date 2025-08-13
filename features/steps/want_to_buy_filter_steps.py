@@ -19,6 +19,11 @@ def step_login(context):
     sleep(2)
     context.login_page.login("zaur.huseynov283@gmail.com", "Zxcvb12345.")
     sleep(2)
+
+@when("the user clicks on Off-plan option")
+def step_click_off_plan(context):
+    context.main_page.click_off_plan()
+
 @when("the user clicks on the Secondary option")
 def step_click_secondary(context):
     context.main_page.click_secondary()

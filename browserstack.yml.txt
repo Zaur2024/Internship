@@ -1,0 +1,10 @@
+userName: zaurhuseynov_RGnVfT
+accessKey: Bpxz1kHxgyFay9guBc4K
+platforms:
+  - os: OS X
+    osVersion: Monterey
+    browserName: Safari
+    browserVersion: 15.6
+browserstackLocal: true
+buildName: browserstack-build-1
+projectName: BrowserStack Sample

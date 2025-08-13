@@ -4,6 +4,7 @@ Feature: Filter Secondary Deals
 
     Given the user opens the main page
     And the user is logged in
+    When the user clicks on Off-plan option
     When the user clicks on the Secondary option
     And the user clicks on Filters
     And the user filters by "want to buy"
